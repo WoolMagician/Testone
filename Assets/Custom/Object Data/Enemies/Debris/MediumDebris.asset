@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c09cc42f91172344cb4a6926dfbbc144, type: 3}
+  m_Name: MediumDebris
+  m_EditorClassIdentifier: 
+  _data:
+    speed: 0.5
+    maxHealth: 30
+    enemyBehaviourSO: {fileID: 11400000, guid: 8a99bee5380fa394687bd5cacf74a3c5, type: 2}
+    lootTable: {fileID: 11400000, guid: 991331a9036270d4d95fb64101eb2a0a, type: 2}
+    enemyObjectVariants:
+    - {fileID: 1117096321569494, guid: 91f739cfcee797a4cbaabbb8316c23f9, type: 3}
+    - {fileID: 1155632979338578, guid: d82175a569c86a94f80f974bde394a58, type: 3}
+    - {fileID: 1801833862642888, guid: 3b7a720eafe7ab247a08d41e9d0913ed, type: 3}
+    - {fileID: 1525555580757638, guid: 969d7c72258abd749959a5e293c5db6d, type: 3}
+    - {fileID: 1480611055556828, guid: 67aba579cfad29843896e2caae09b4e6, type: 3}
+    - {fileID: 1421335478820944, guid: bed4d0db0f9c90d4b8b2408c9f7a25dd, type: 3}
+    enemyMaterial: {fileID: 2100000, guid: 0b42d181a92b7074f8c6a5effb4220c2, type: 2}
+    enemyTrail: {fileID: 0}
+    enemyDieParticles: {fileID: 1479196316444936, guid: d1a0124dd9bd9434a83ec458fd2bbeb0, type: 3}
+    enemyObjectScaleOverride: {x: 0.3, y: 0.3, z: 0.3}
+    enemyTrailScaleOverride: {x: 1, y: 1, z: 1}
+    enemyDieParticlesScaleOverride: {x: 1.6, y: 1.6, z: 1.6}

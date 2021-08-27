@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836da5b04bbd23b43a799fafdb90b94c, type: 3}
+  m_Name: DMK-1
+  m_EditorClassIdentifier: 
+  _data:
+    turretName: DMK-1
+    levels:
+    - cost: 10
+      health: 100
+      maxSpeed: 3
+      boostSpeedMultiplier: 0
+      fireRate: 1
+      damagePerHit: 10
+      patrolSphereRadius: 3
+      ammo: {fileID: 11400000, guid: a5a18e0dda57dcb4c874e5eb79297d66, type: 2}
+      turretObject: {fileID: 2708857085714449402, guid: ae0ea898d91cf0f4385145dbaaccdbe7, type: 3}
+      turretTrail: {fileID: 3041748491912533486, guid: 1e192e0d9e6917d4cace7e056662b6bf, type: 3}
+      turretMuzzleFlash: {fileID: 8732780971997957100, guid: 90690541a66b5af4f92a07c1d2a02a55, type: 3}
+      turretObjectScaleOverride: {x: 0.3, y: 0.3, z: 0.3}
