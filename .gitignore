@@ -31,9 +31,5 @@ _ReSharper*/
 #Nuget packages folder
 packages/
 /Library
-/Assets/Plugins
 /Assets/Polygon*
-/Assets/Graphy*
-/Assets/Materials*
-/Assets/TextMesh*
 /Temp
