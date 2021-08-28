@@ -8,4 +8,9 @@ public class PlanetData: BaseData
     public float radius;
     public float health;
     public GameObject planetObject;
+
+    public override IData Copy()
+    {
+        throw new System.NotImplementedException();
+    }
 }

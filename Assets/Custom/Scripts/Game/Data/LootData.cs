@@ -33,4 +33,9 @@ public class LootData : BaseData
 
     [SerializeField]
     public ScriptableObject lootSO;
+
+    public override IData Copy()
+    {
+        throw new System.NotImplementedException();
+    }
 }

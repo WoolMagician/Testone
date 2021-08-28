@@ -1,21 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public class EnemyDeathNotificationEventArgs : NotificationEventArgs
+public class Enemy : NotificationPublisher, IHasHealth , IHasPowerUPs
 {
-    public Enemy enemy;
-    
-    public EnemyDeathNotificationEventArgs(Enemy enemy)
-    {
-        this.publisher = enemy.gameObject;
-        this.enemy = enemy;
-    }
-}
-
-public class Enemy : MonoBehaviour, IHasHealth
-{
-    public EnemyData enemyData;
-    public EnemyBehaviour currentEnemyBehaviour;
-
+    public EnemyData enemyActualData;
+    public EnemyData enemyReferenceData;
+    public EnemyBehaviour behaviour;
+        
+    public event HealthChangedArgs OnHealthChanged;
     private float _health;
 
     public float Health {
@@ -24,60 +16,84 @@ public class Enemy : MonoBehaviour, IHasHealth
             float oldValue = _health;
             _health = value;
             OnHealthChanged?.Invoke(oldValue, _health);
+            if (this.Health == 0) this.Die();
         }
     }
 
-    public event HealthChangedArgs OnHealthChanged;
+    public List<IPowerUP> PowerUPs { get; set; } = new List<IPowerUP>();
 
-    private NotificationPublisher publisher = new NotificationPublisher();
+    private void Update()
+    {
+        //Apply enemy data
+        this.ApplyEnemyData();
+
+        //Apply powerup overrides
+        this.ApplyPowerUPs();
+
+        //Call behaviour
+        this.ApplyBehaviour();
+    }
+
+    public void ApplyEnemyData()
+    {
+        if (enemyReferenceData != null)
+            enemyActualData = (EnemyData)enemyReferenceData.Copy();
+    }
+
+    public void ApplyPowerUPs()
+    {
+        foreach (IPowerUP item in PowerUPs)
+        {
+            // Apply powerup chain only to current level
+            item.ApplyPowerUP(enemyActualData);
+        }
+    }
+
+    public void ApplyBehaviour()
+    {
+        if (this.behaviour != null)     
+            this.behaviour.Behave(this);        
+    }
 
     public void SetEnemyData(EnemyData enemyData)
     {
-        this.enemyData = enemyData;
-        this.Health = this.enemyData.maxHealth;
-
-        if(enemyData.enemyBehaviourSO != null)
-        {
-            this.currentEnemyBehaviour = enemyData.enemyBehaviourSO.GetBehaviourScript();
-        }
+        enemyReferenceData = enemyData;
+        this.behaviour = enemyReferenceData.enemyBehaviourSO.GetBehaviourScript();
+        this._health = enemyReferenceData.maxHealth;
     }
-
-    public void SetEnemyBehaviour(EnemyBehaviour enemyBehaviour)
-    {
-        currentEnemyBehaviour = enemyBehaviour;
-    }
-
-    private void Start()
-    {
-        //Add observers
-        publisher.AddObserver(WaveManager.Instance);
-
-        //Keep game manager as last as it will destroy this object.
-        publisher.AddObserver(GameManager.Instance);
-    }
-
-    void Update()
-    {
-        this.currentEnemyBehaviour.Behave(this);
-    }    
 
     public void SetHealth(float healthValue)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void DecreaseHealth(float value)
-    {
-        this.Health = Mathf.Clamp(this.Health - value, 0, this.enemyData.maxHealth);
-
-        if (this.Health == 0)
-        {
-            publisher.Notify(new EnemyDeathNotificationEventArgs(this));
-        }
+        this.Health = healthValue;
     }
 
     public void IncreaseHealth(float value)
     {
-        throw new System.NotImplementedException();
+        this.Health += value;
+    }
+
+    public void DecreaseHealth(float value)
+    {
+        this.Health = Mathf.Clamp(this.Health - value, 0, this.enemyActualData.maxHealth);        
+    }
+
+    public void Die()
+    {
+        //Request loot
+        this.Notify(new LootRequestNotificationEventArgs(this.enemyActualData.lootTableSO.Data, this.gameObject));
+
+        //Notify death
+        this.Notify(new EnemyDeathNotificationEventArgs(this));
+
+        //Instantiate die particles
+        if (enemyActualData.enemyDieParticles != null)
+        {
+            Instantiate(enemyActualData.enemyDieParticles,
+                        this.transform.position,
+                        Quaternion.identity).transform.localScale = enemyActualData.enemyDieParticlesScaleOverride;
+        }
+
+        //Destroy game object
+        Destroy(this.gameObject);
     }
 }

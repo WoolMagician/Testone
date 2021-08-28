@@ -108,15 +108,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1115f3dbbc0df834282bfa767b7a5a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_loop: 1
-  drawGizmos: 0
-  gizmoColor: {r: 1, g: 1, b: 1, a: 1}
-  gizmoSmoothness: 4
-  m_autoConstructMode: 2
-  m_autoCalculateNormals: 1
-  m_autoCalculatedNormalsAngle: 0
-  OrbitData: {fileID: 11400000, guid: e507039d07f11ec4796be9b164301635, type: 2}
-  OrbitSpline: {fileID: 1868811875597958325}
+  orbitData:
+    speedMultiplier: 1
+    damageMultiplier: 1
+  OrbitSpline: {fileID: 1868811875597958327}
 --- !u!114 &1868811875597958327
 MonoBehaviour:
   m_ObjectHideFlags: 0

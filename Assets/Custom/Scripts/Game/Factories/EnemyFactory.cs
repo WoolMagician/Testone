@@ -19,7 +19,7 @@ public class EnemyFactory : Factory<EnemyFactory, EnemySO, Enemy>
             return null;
 
         Enemy enemyComp;
-        GameObject newEnemy = Instantiate(enemyData.GetRandomGameObjectVariant(), position, Quaternion.Euler(rotation));
+        GameObject newEnemy = Instantiate(enemyData.GetRandomGameObjectVariant(), position, Quaternion.Euler(rotation), factoryGroupingObject.transform);
         newEnemy.name = string.Format(ObjectName + "_{0}", Instance._createdObjects.Count);
         newEnemy.layer = LayerMask.NameToLayer(ObjectName);
 
@@ -30,16 +30,24 @@ public class EnemyFactory : Factory<EnemyFactory, EnemySO, Enemy>
         enemyComp = newEnemy.AddComponent<Enemy>();
         enemyComp.SetEnemyData(enemyData);
 
+        GameManager.Instance.SubscribeTo(enemyComp);
+        WaveManager.Instance.SubscribeTo(enemyComp);
+        LootFactory.Instance.SubscribeTo(enemyComp);
+
         newEnemy.transform.localScale = enemyData.enemyObjectScaleOverride;
 
         MeshRenderer meshRenderer = newEnemy.GetComponent<MeshRenderer>();
         meshRenderer.material = enemyData.enemyMaterial;
 
         MeshFilter meshFilter = newEnemy.GetComponent<MeshFilter>();
-        newEnemy.AddComponent<MeshCollider>().sharedMesh = meshFilter.sharedMesh;
+        MeshCollider meshCollider = newEnemy.AddComponent<MeshCollider>();
+        meshCollider.sharedMesh = meshFilter.sharedMesh;
+        meshCollider.convex = true; //Non convex objects will not work with OverlapSphere!!!
+
         newEnemy.AddComponent<Rigidbody>().isKinematic = true;
 
         Instance._createdObjects.Add(enemyComp);
+
         return enemyComp;
     }
 

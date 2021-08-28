@@ -15,7 +15,7 @@ MonoBehaviour:
   _data:
     id: 3
     name: Balista
-    rarity: 0
+    rarity: 1
     type: 4
     destroyAfterSeconds: 10
     lootSO: {fileID: 11400000, guid: 4093ce97b8fa1e848b67c023dd28c0c0, type: 2}

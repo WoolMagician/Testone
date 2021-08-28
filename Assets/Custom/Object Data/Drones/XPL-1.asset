@@ -13,17 +13,19 @@ MonoBehaviour:
   m_Name: XPL-1
   m_EditorClassIdentifier: 
   _data:
-    turretName: DMK-1
+    droneName: XPL-1
+    droneBehaviourSO: {fileID: 11400000, guid: 30e4259bc9b7e7a439a22230a41507aa, type: 2}
     levels:
     - cost: 10
-      health: 100
+      health: 0
       maxSpeed: 3
       boostSpeedMultiplier: 0
-      fireRate: 1
-      damagePerHit: 10
-      patrolSphereRadius: 3
+      fireRate: 0
+      damagePerHit: 0
+      damageOnExplode: 100
+      patrolSphereRadius: 1
       ammo: {fileID: 11400000, guid: a5a18e0dda57dcb4c874e5eb79297d66, type: 2}
-      turretObject: {fileID: 2708857085714449402, guid: ae0ea898d91cf0f4385145dbaaccdbe7, type: 3}
-      turretTrail: {fileID: 3041748491912533486, guid: 1e192e0d9e6917d4cace7e056662b6bf, type: 3}
-      turretMuzzleFlash: {fileID: 8732780971997957100, guid: 90690541a66b5af4f92a07c1d2a02a55, type: 3}
-      turretObjectScaleOverride: {x: 0.3, y: 0.3, z: 0.3}
+      droneObject: {fileID: 1234771383258718, guid: 0a8a83512bf4eb440b2f640bed8eef96, type: 3}
+      droneTrail: {fileID: 3041748491912533486, guid: 1e192e0d9e6917d4cace7e056662b6bf, type: 3}
+      droneMuzzleFlash: {fileID: 0}
+      droneObjectScaleOverride: {x: 0.2, y: 0.2, z: 0.2}

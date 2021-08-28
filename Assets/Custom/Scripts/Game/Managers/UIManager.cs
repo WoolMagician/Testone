@@ -10,12 +10,16 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI scoreCounterText;
     public TextMeshProUGUI enemyCounterText;
     public TextMeshProUGUI waveCounterText;
+    public TextMeshProUGUI missileCounterText;
+    public TextMeshProUGUI shieldCounterText;
 
     // Update is called once per frame
     void Update()
     {
         scoreCounterText.text = GameManager.Instance.simulationData.mineralAcquired.ToString(); //string.Format("Score: {0}", gm.acquiredMinerals);
         enemyCounterText.text = GameManager.Instance.simulationData.defeatedEnemies.ToString();
+        missileCounterText.text = GameManager.Instance.simulationData.missilesLeft.ToString();
+        shieldCounterText.text = GameManager.Instance.simulationData.shieldHitsLeft.ToString();
         waveCounterText.text = WaveManager.Instance.currentWaveIndex.ToString(); //string.Format("Waves: {0}", WaveManager.Instance.currentWaveIndex);
     }
 

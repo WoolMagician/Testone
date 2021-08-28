@@ -7,7 +7,7 @@ public class DroneMenuButton : MonoBehaviour
 {
     public Image buttonImage;
     public Color unavailableTurretButtonColor;
-    public TurretData turretData;
+    public DroneSO turretData;
     public Camera cam;
     public Canvas canvas;
     private Vector3 startPos;
@@ -21,7 +21,7 @@ public class DroneMenuButton : MonoBehaviour
     {
         get
         {
-            return turretData != null && turretData.levels.Length > 0;
+            return turretData != null && turretData.Data != null && turretData.Data.levels.Length > 0;
         }
     }
 
@@ -44,7 +44,6 @@ public class DroneMenuButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.turretData = DroneFactory.Instance.availableObjects[0].Data;
         this.Initialize();
     }
 
@@ -63,19 +62,19 @@ public class DroneMenuButton : MonoBehaviour
                 buttonImage.color = Color.white;
             }
 
-            if (turretData.levels[0].turretObject != null)
+            if (turretData.Data.levels[0].droneObject != null)
             {
                 if (turretPreview != null)
                 {
                     Destroy(turretPreview);
                 }
-                turretPreview = Instantiate(turretData.levels[0].turretObject, turretObjectPivot);
+                turretPreview = Instantiate(turretData.Data.levels[0].droneObject, turretObjectPivot);
                 turretPreview.layer = LayerMask.NameToLayer("UI");
-                turretPreview.transform.localScale = Vector3.one * 25f;
+                turretPreview.transform.localScale = turretData.Data.levels[0].droneObjectScaleOverride * 80;
 
                 if (priceTag != null)
                 {
-                    priceTag.text = turretData.levels[0].cost.ToString();
+                    priceTag.text = turretData.Data.levels[0].cost.ToString();
                 }
             }
             else
@@ -99,14 +98,14 @@ public class DroneMenuButton : MonoBehaviour
 
         if (selectedOrbit != null && float.TryParse(selectedOrbit.name, out float radius))
         {
-            if (GameManager.Instance.simulationData.mineralAcquired >= turretData.levels[0].cost)
+            if (GameManager.Instance.simulationData.mineralAcquired >= turretData.Data.levels[0].cost)
             {
                 //Start the game with one turret
                 Drone newTurret = DroneFactory.Instance.Create(turretData);
-                newTurret.SetOrbit(OrbitFactory.Instance.CreateNewOrbit(radius).GetComponent<Orbit>());
+                newTurret.SetOrbit(OrbitFactory.Instance.Create((int)radius));
 
                 //TurretFactory.CreateTurret(OrbitFactory.Instance.CreateNewOrbit(radius), turretData, ammoData);
-                GameManager.Instance.simulationData.mineralAcquired -= turretData.levels[0].cost;
+                GameManager.Instance.simulationData.mineralAcquired -= turretData.Data.levels[0].cost;
             }
             selectedOrbit.GetComponentInParent<OrbitDrawer>().lineWidth = 0.02f;
         }

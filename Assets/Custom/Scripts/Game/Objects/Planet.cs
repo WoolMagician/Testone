@@ -1,15 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Planet : Singleton<Planet>
 {
+    public Shield shield;
+
     public GameObject orbitPrefab;
     public GameObject[] planetMeshes;
-
-    public ShieldSO[] shields;
-
-    public int missilesLeft = 1;
 
     public delegate void PlanetHit(GameObject hitObject);
     public event PlanetHit OnPlanetHit;

@@ -14,7 +14,7 @@ public class DroneFactory : Factory<DroneFactory, DroneSO, Drone>
 
     public override Drone CreateAtWithRotation(IData data, Vector3 position, Vector3 rotation)
     {
-        TurretData turretData = (TurretData)data;
+        DroneData turretData = (DroneData)data;
 
         // Do not create and return in case of null data
         if (turretData == null) return null;
@@ -23,31 +23,28 @@ public class DroneFactory : Factory<DroneFactory, DroneSO, Drone>
         {
             name = string.Format(ObjectName + "_{0}", Instance._createdObjects.Count)
         };
+        newTurret.transform.SetParent(factoryGroupingObject.transform);
         newTurret.layer = LayerMask.NameToLayer(ObjectName);
         Drone turrComponent = newTurret.AddComponent<Drone>();
-        SphereCollider sphereColl = newTurret.AddComponent<SphereCollider>();
+        //SphereCollider sphereColl = newTurret.AddComponent<SphereCollider>();
         newTurret.AddComponent<VisualizeTransform>();
 
-        turrComponent.turretData = turretData;
-        turrComponent.ammoData = turretData.GetLevelData(turrComponent.currentLevel).ammo.Data;
-        turrComponent.speed = turretData.GetLevelData(turrComponent.currentLevel).maxSpeed;
-        turrComponent.travelMode = TravelMode.Loop;
-        turrComponent.rotationLerpModifier = 10f;
+        turrComponent.droneReferenceData = turretData;
+        if (turretData.GetLevelData(turrComponent.CurrentLevel).ammo != null)
+        {
+            turrComponent.ammoData = turretData.GetLevelData(turrComponent.CurrentLevel).ammo.Data;
+        }
+        turrComponent.walker = newTurret.AddComponent<BezierWalkerWithSpeed>();
+        turrComponent.walker.speed = turretData.GetLevelData(turrComponent.CurrentLevel).maxSpeed;
+        turrComponent.walker.travelMode = TravelMode.Loop;
+        turrComponent.walker.rotationLerpModifier = 10f;
 
-        sphereColl.center = Vector3.zero;
-        sphereColl.isTrigger = true;
-        sphereColl.radius = turretData.GetLevelData(turrComponent.currentLevel).patrolSphereRadius;
+        //sphereColl.center = Vector3.zero;
+        //sphereColl.isTrigger = true;
+        //sphereColl.radius = turretData.GetLevelData(turrComponent.CurrentLevel).patrolSphereRadius;
 
         Instance._createdObjects.Add(turrComponent);
 
         return turrComponent;
-    }
-
-    public static void BrakeAllTurrets()
-    {
-        foreach (Drone item in Instance._createdObjects)
-        {
-            Instance.StartCoroutine(item.StopBoosterForTime(2));
-        }
     }
 }

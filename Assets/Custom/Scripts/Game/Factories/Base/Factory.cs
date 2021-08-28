@@ -6,10 +6,21 @@ using System.Collections.Generic;
 /// </summary>
 public abstract class Factory<T, T1, T2> : Singleton<T> where T : MonoBehaviour where T1 : IDataContainer<IData>
 {
+    protected GameObject factoryGroupingObject;
+
     public T1[] availableObjects;
     public abstract string ObjectName { get; }
     public abstract List<T2> CreatedObjects { get; set; }
     public abstract T2 CreateAtWithRotation(IData data, Vector3 position, Vector3 rotation);
+
+    protected override void OnAwake()
+    {
+        if(factoryGroupingObject == null)
+        {
+            factoryGroupingObject = new GameObject(this.GetType().Name + "_Group");
+            factoryGroupingObject.transform.parent = this.transform;
+        }
+    }
 
     public virtual T2 Create(IData data)
     {

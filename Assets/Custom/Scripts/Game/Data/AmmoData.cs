@@ -11,4 +11,14 @@ public class AmmoData : BaseData
     public GameObject ammoTrail;
 
     public Vector3 ammoObjectScaleOverride = Vector3.one;
+
+    public override IData Copy()
+    {
+        return new AmmoData { ammoName = this.ammoName,
+                              damageMultiplier = this.damageMultiplier,
+                              maxSpeed = this.maxSpeed,
+                              ammoObject = this.ammoObject,
+                              ammoTrail = this.ammoTrail,
+                              ammoObjectScaleOverride = this.ammoObjectScaleOverride };
+    }
 }

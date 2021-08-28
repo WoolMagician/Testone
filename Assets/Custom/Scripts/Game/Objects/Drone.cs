@@ -1,190 +1,179 @@
 ﻿using BezierSolution;
 using DG.Tweening;
-using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
-public class Drone : BezierWalkerWithSpeed
+[System.Serializable]
+public class DroneSpeedPU : IPowerUP
 {
-    public enum TurretState
+    public float speedMultiplier = 2f;
+
+    public void ApplyPowerUP(IData data)
     {
-        Idle,
-        Patrol,
-        Wake,
-        Fire
+        DroneLevelData droneLevelData = (DroneLevelData)data;
+        droneLevelData.maxSpeed = droneLevelData.maxSpeed * speedMultiplier;
     }
+}
 
-    public GameObject muzzleFlashObject;
+public class Drone : MonoBehaviour, 
+    IHasPowerUPs {
 
-    public TurretState CurrentState = TurretState.Idle;
-    public Enemy currentFireTarget = null;
-
-
-    public int currentLevel = 0;
-    public TurretData turretData;
+    [SerializeField]
+    private DroneData droneActualData;
+    public DroneData droneReferenceData;
     public AmmoData ammoData;
 
-    private bool allowFire = true;
-    private bool allowBoosterStop = true;
-    private int speedRandomizer = 1;
+    public Orbit orbit;
+    public GameObject droneObject;
+    public GameObject droneTrailObject;
+    public GameObject muzzleFlashObject;
 
-    GameObject turretObject;
-    GameObject turretTrailObject;
+    [SerializeField]
+    private List<Enemy> enemiesWithinRange = new List<Enemy>();
 
-    private bool InitializeTurret()
+    [SerializeField]
+    private int currentLevel = 0;
+
+    public DroneBehaviour behaviour;
+    public BezierWalkerWithSpeed walker;
+
+    public List<IPowerUP> PowerUPs { get; set; } = new List<IPowerUP>();
+    public int CurrentLevel { get => currentLevel; private set => currentLevel = value; }
+    public List<Enemy> EnemiesWithinRange { get => enemiesWithinRange; }
+
+    public DroneLevelData GetCurrentLevelData()
     {
+        if (droneActualData != null)
+        {
+            return droneActualData.GetLevelData(currentLevel);
+        }
+        else
+            return null;
+    }
+
+    void Start()
+    {
+        //Initialize drone object
+        this.Initialize();
+    }
+
+    private void Update()
+    {
+
+        this.GetEnemiesWithinRange();
+
+        //Apply drone level data
+        this.ApplyDroneData();
+
+        //Apply powerup overrides
+        this.ApplyPowerUPs();
+
+        //Call behaviour
+        this.ApplyBehaviour();
+    }
+
+    private bool Initialize()
+    {
+        //Apply drone level data
+        this.ApplyDroneData();
+
         try
         {
-            Destroy(turretObject);
-            Destroy(turretTrailObject);
+            Destroy(droneObject);
+            Destroy(droneTrailObject);
 
-            if(turretData != null)
+            if(GetCurrentLevelData() != null)
             {
-                turretObject = Instantiate(turretData.GetLevelData(currentLevel).turretObject, this.transform);
-                turretObject.transform.localScale = turretData.GetLevelData(currentLevel).turretObjectScaleOverride;
-                turretTrailObject = Instantiate(turretData.GetLevelData(currentLevel).turretTrail, this.transform);
-                muzzleFlashObject = Instantiate(turretData.GetLevelData(currentLevel).turretMuzzleFlash, turretObject.transform);
+                droneObject = Instantiate(GetCurrentLevelData().droneObject, this.transform);
+                droneObject.transform.localScale = GetCurrentLevelData().droneObjectScaleOverride;
+
+                if(GetCurrentLevelData().droneTrail != null)
+                {
+                    droneTrailObject = Instantiate(GetCurrentLevelData().droneTrail, droneObject.transform);
+                }
+
+                if (GetCurrentLevelData().droneMuzzleFlash != null)
+                {
+                    muzzleFlashObject = Instantiate(GetCurrentLevelData().droneMuzzleFlash, droneObject.transform);
+                }
+                behaviour = droneActualData.droneBehaviourSO.GetBehaviourScript();
             }
         }
         catch
         {
-            Debug.LogWarning("Turret initialization failed.");
+            Debug.LogWarning("Drone initialization failed.");
             return false;
         }
         return true;
     }
 
+    public void GetEnemiesWithinRange()
+    {
+        enemiesWithinRange.Clear();
+        Collider[] colliders = Physics.OverlapSphere(this.transform.position, this.GetCurrentLevelData().patrolSphereRadius, LayerMask.GetMask(EnemyFactory.Instance.ObjectName));
+
+        foreach (Collider collider in colliders)
+        {
+            enemiesWithinRange.Add(collider.GetComponent<Enemy>());
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, this.GetCurrentLevelData().patrolSphereRadius);
+    }
+
+    public void ApplyDroneData()
+    {
+        if (droneReferenceData != null)
+            droneActualData = (DroneData)droneReferenceData.Copy();                    
+    }
+
+    public void ApplyPowerUPs()
+    {
+        foreach (IPowerUP item in PowerUPs)
+        {
+            // Apply powerup chain only to current level
+            item.ApplyPowerUP(GetCurrentLevelData());
+        }
+    }
+
+    public void ApplyBehaviour()
+    {
+        if (this.behaviour != null)
+            this.behaviour.Behave(this);
+    }
+
     public void SetOrbit(Orbit orbit)
     {
-        this.spline = orbit.OrbitSpline;
+        this.orbit = orbit;
+        walker.spline = orbit.OrbitSpline;
     }
 
-    void Start()
-    {
-        this.InitializeTurret();
-        speedRandomizer = (Random.Range(0, 2) == 0) ? 1 : -1;
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.layer == LayerMask.NameToLayer(EnemyFactory.Instance.ObjectName))
+    //    {
+    //        Enemy enemy = other.GetComponent<Enemy>();
 
-    void Update()
-    {
-        if (spline == null) return;
+    //        if (!enemiesWithinRange.Contains(enemy))
+    //        {                
+    //            enemiesWithinRange.Add(enemy);
+    //        }
+    //    }
+    //}
 
-        Execute(Time.deltaTime);
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.gameObject.layer == LayerMask.NameToLayer(EnemyFactory.Instance.ObjectName))
+    //    {
+    //        Enemy enemy = other.GetComponent<Enemy>();
 
-        if (allowBoosterStop)
-        {
-            this.speed = turretData.GetLevelData(currentLevel).maxSpeed * speedRandomizer;
-        }
-
-        if (Input.GetKeyDown(KeyCode.C) && allowBoosterStop)
-        {
-            StartCoroutine(StopBoosterForTime(2));
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            this.currentLevel += 1;
-            this.InitializeTurret();
-        }
-
-        switch (CurrentState)
-        {
-            case TurretState.Idle:
-                break;
-            case TurretState.Patrol:
-                //if(allowBoosterStop)
-                //{
-                //    walker.enabled = true;
-                //}
-                break;
-            case TurretState.Wake:
-                break;
-            case TurretState.Fire:
-                this.HandleFireState();
-                break;
-            default:
-                break;
-        }
-
-    }
-
-    private void HandleFireState()
-    {
-        if (currentFireTarget != null)
-        {
-            float distance;
-            RaycastHit hit;
-
-            if (Physics.Linecast(this.transform.position, currentFireTarget.transform.position, out hit))
-            {
-                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-                {
-                    distance = Vector3.Distance(this.transform.position, hit.point);
-
-                    if (distance > turretData.GetLevelData(currentLevel).patrolSphereRadius)
-                    {
-                        currentFireTarget = null;
-                        return;
-                    }
-                }
-            }
-            transform.DOLookAt(currentFireTarget.transform.position, 0.1f);
-
-            if (allowFire) {StartCoroutine(Fire());}
-        }
-        else
-        {
-            if (muzzleFlashObject != null) { muzzleFlashObject.SetActive(false); }
-            CurrentState = TurretState.Patrol;
-        }
-    }
-
-    float walkerBrakeSpeed = 0.5f;
-    float walkerSpeedTweenDuration = 0.75f;
-    float actualWalkerSpeed = 3f;
-    float maxWalkerSpeed = 3f;
-    Tween walkerSpeedTween;
-
-    void OnUpdateWalkerSpeed()
-    {
-        this.speed = actualWalkerSpeed * speedRandomizer;
-    }
-    void OnUpdateWalkerSpeedEnd()
-    {
-        walkerSpeedTween = null;
-    }
-    public void Brake(bool value)
-    {
-        walkerSpeedTween = DOTween.To(() => actualWalkerSpeed,
-            x => actualWalkerSpeed = x, value ? walkerBrakeSpeed : maxWalkerSpeed, walkerSpeedTweenDuration).OnUpdate(OnUpdateWalkerSpeed);
-        walkerSpeedTween.OnComplete(OnUpdateWalkerSpeedEnd);
-    }
-
-    public IEnumerator StopBoosterForTime(float time)
-    {
-        allowBoosterStop = false;
-        this.Brake(true);
-        yield return new WaitForSeconds(time);
-        this.Brake(false);
-        allowBoosterStop = true;
-    }
-
-    private IEnumerator Fire()
-    {
-        allowFire = false;
-        if (muzzleFlashObject != null) { muzzleFlashObject.SetActive(true); }
-        currentFireTarget.DecreaseHealth(turretData.GetLevelData(currentLevel).damagePerHit * ammoData.damageMultiplier);
-        yield return new WaitForSeconds(turretData.GetLevelData(currentLevel).fireRate);
-        if (muzzleFlashObject != null) { muzzleFlashObject.SetActive(false); }
-        allowFire = true;
-    }
-
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy") && currentFireTarget == null)
-        {
-            currentFireTarget = other.gameObject.GetComponentInParent<Enemy>();
-            CurrentState = TurretState.Fire;
-        }
-    }
+    //        if (enemiesWithinRange.Contains(enemy))
+    //        {
+    //            enemiesWithinRange.Remove(enemy);
+    //        }
+    //    }
+    //}
 }

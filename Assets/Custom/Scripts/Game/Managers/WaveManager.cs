@@ -94,7 +94,7 @@ public class WaveManager : Singleton<WaveManager>, INotificationObserver
 
     // Start is called before the first frame update
     void Start()
-    {
+    {        
         NextWave(0);
     }
 
@@ -152,7 +152,6 @@ public class WaveManager : Singleton<WaveManager>, INotificationObserver
                     cooldownTime = Random.Range(10f, 14f);
                     break;
             }
-            Debug.Log(string.Format("Waiting {0} seconds for next enemy.", cooldownTime * waveDemultiplier));
             yield return new WaitForSeconds(cooldownTime * waveDemultiplier);
             enemySpawnCooldown = false;
         //}
@@ -201,7 +200,7 @@ public class WaveManager : Singleton<WaveManager>, INotificationObserver
         return spawnPos;
     }
 
-    public void OnNotify(NotificationEventArgs args)
+    public void OnNotification(NotificationEventArgs args)
     {
         System.Type type = args.GetType();
 
@@ -226,7 +225,7 @@ public class WaveManager : Singleton<WaveManager>, INotificationObserver
             if (this.currentWave.lootTableSO != null && this.currentWave.lootTableSO.Data != null)
             {
                 // Instantiate loot for the current completed wave
-                LootFactory.Instance.CreateAt(this.currentWave.lootTableSO.Data, args.enemy.transform.position);
+                LootFactory.Instance.CreateAtWithRotation(this.currentWave.lootTableSO.Data, args.enemy.transform.position, new Vector3(-90, 0, 0));
             }
 
             // Inc wave index
@@ -236,5 +235,15 @@ public class WaveManager : Singleton<WaveManager>, INotificationObserver
             NextRandomWave();
 
         }
+    }
+
+    public void SubscribeTo(NotificationPublisher publisher)
+    {
+        publisher.AddObserver(this);
+    }
+
+    public void UnsubscribeFrom(NotificationPublisher publisher)
+    {
+        publisher.RemoveObserver(this);
     }
 }

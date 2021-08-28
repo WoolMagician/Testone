@@ -16,7 +16,7 @@ MonoBehaviour:
     speed: 0.8
     maxHealth: 20
     enemyBehaviourSO: {fileID: 11400000, guid: 8a99bee5380fa394687bd5cacf74a3c5, type: 2}
-    lootTable: {fileID: 11400000, guid: e3ed211fb89127945bb754765be4d32b, type: 2}
+    lootTableSO: {fileID: 11400000, guid: e3ed211fb89127945bb754765be4d32b, type: 2}
     enemyObjectVariants:
     - {fileID: 100000, guid: da502c7d6803e5c42b412ee69971f19a, type: 3}
     - {fileID: 100000, guid: 3ef4f27cefae9714999be8b86a844e06, type: 3}

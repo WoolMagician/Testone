@@ -5,6 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class OrbitData : BaseData
 {
-    public float range;
-    public float speedMultiplier;
+    public float radius = 1f;
+    public float speedMultiplier = 1;
+    public float damageMultiplier = 1;
+
+    public override IData Copy()
+    {
+        throw new System.NotImplementedException();
+    }
 }

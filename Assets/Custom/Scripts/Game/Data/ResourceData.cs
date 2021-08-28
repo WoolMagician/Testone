@@ -4,4 +4,8 @@ using UnityEngine;
 
 public class ResourceData : BaseData
 {
+    public override IData Copy()
+    {
+        throw new System.NotImplementedException();
+    }
 }

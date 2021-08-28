@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using UnityEngine;
 
-public class NotificationPublisher
+public class NotificationPublisher : MonoBehaviour
 {
     private List<INotificationObserver> observers = new List<INotificationObserver>();
 
@@ -11,7 +12,7 @@ public class NotificationPublisher
         {
             //Notify all observers
             //Each observer should check if it is interested in this event
-            observers[i].OnNotify(args);
+            observers[i].OnNotification(args);
         }
     }
 

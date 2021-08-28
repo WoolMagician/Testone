@@ -16,6 +16,11 @@ public class LootTableData : BaseData
     public bool lootOnlyHighestRarity = true;
     public LootTableItem[] loots;
 
+    public override IData Copy()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public List<LootData> GetLoot()
     {
         List<LootData> dropList = new List<LootData>();

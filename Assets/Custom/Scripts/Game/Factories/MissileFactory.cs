@@ -20,7 +20,7 @@ public class MissileFactory : Factory<MissileFactory, MissileSO, Missile>
         // Do not create and return in case of null data
         if (missileData == null) return null;
 
-        GameObject newMissile = Instantiate(missileData.missilePrefab, position, Quaternion.Euler(rotation));
+        GameObject newMissile = Instantiate(missileData.missilePrefab, position, Quaternion.Euler(rotation), factoryGroupingObject.transform);
         newMissile.name = string.Format(ObjectName + "_{0}", Instance._createdObjects.Count);
         newMissile.layer = LayerMask.NameToLayer(ObjectName);
         newMissile.transform.localScale = missileData.missileObjectScaleOverride;

@@ -1,11 +1,8 @@
 using UnityEngine;
 
-public class NotificationEventArgs
-{
-    public GameObject publisher;
-}
-
 public interface INotificationObserver
 {
-    void OnNotify(NotificationEventArgs args);
+    void OnNotification(NotificationEventArgs args);
+    void SubscribeTo(NotificationPublisher publisher);
+    void UnsubscribeFrom(NotificationPublisher publisher);
 }

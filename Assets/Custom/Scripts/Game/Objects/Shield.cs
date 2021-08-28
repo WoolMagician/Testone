@@ -296,17 +296,15 @@ public class Shield : MonoBehaviour
 
                 mRenderer.sharedMaterial = activationMaterial;
             }
+            mRenderer.enabled = active;
+
         }
         else
         {
             shieldActivationTime = (active) ? 1.0f : 0.0f;
             shieldActivationDir = 0.0f;
         }
-
-        //if (mRenderer != null)
-        //{
-        //    mRenderer.enabled = active;
-        //}
+        shieldActive = active;
 
         if (coll != null)
         {
@@ -324,8 +322,13 @@ public class Shield : MonoBehaviour
 
     public void OnHit(Vector3 hitPos, float hitScale)
     {
-        shieldActive = false;
         AddHitMeshAtPos(gameObject.GetComponent<MeshFilter>().mesh, hitPos, hitScale);
+        GameManager.Instance.simulationData.shieldHitsLeft = Mathf.Clamp(GameManager.Instance.simulationData.shieldHitsLeft - 1, 0, GameManager.Instance.simulationData.shieldHitsLeft);
+
+        if(GameManager.Instance.simulationData.shieldHitsLeft == 0 && shieldActive)
+        {
+            StartCoroutine(DeactivateAfterTime(_shieldData.shieldHitEffectDuration));
+        }
     }
 
     private void AddHitMeshAtPos(Mesh mesh, Vector3 hitPos, float hitScale)
@@ -370,12 +373,17 @@ public class Shield : MonoBehaviour
 
             FXVShieldHit hit = hitObject.AddComponent<FXVShieldHit>();
             hit.StartHitFX(_shieldData.shieldHitEffectDuration);
-            StartCoroutine(DeactivateAfterTime(_shieldData.shieldHitEffectDuration));
 
             currentHitIndex++;
             if (currentHitIndex > 100)
                 currentHitIndex = 1;
         }
+    }
+
+    public IEnumerator ActivateAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        this.SetShieldActive(true);
     }
 
     private IEnumerator DeactivateAfterTime(float time)

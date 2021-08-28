@@ -13,4 +13,9 @@ public class ShieldData : BaseData
     public float shieldActivationSpeed;
     public float shieldHitEffectDuration;
     public Color shieldHitColor;
+
+    public override IData Copy()
+    {
+        throw new System.NotImplementedException();
+    }
 }

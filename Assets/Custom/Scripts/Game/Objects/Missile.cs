@@ -5,8 +5,6 @@ public class Missile : MonoBehaviour
     public MissileData missileData;
     public Transform target;
     public Rigidbody rigidBody;
-    //public float angleChangingSpeed = 10f;
-    //public float movementSpeed= 10f;
 
     private void Start()
     {
@@ -33,7 +31,7 @@ public class Missile : MonoBehaviour
     {
         GameObject collisionObj = other.gameObject;
 
-        if (collisionObj.layer == LayerMask.NameToLayer(EnemyFactory.Instance.ObjectName))
+        if (InputEventManager.Instance.enemyMask.Contains(collisionObj.layer))
         {
             Enemy enemy = other.GetComponent<Enemy>();
             enemy.DecreaseHealth(missileData.damagePerHit);

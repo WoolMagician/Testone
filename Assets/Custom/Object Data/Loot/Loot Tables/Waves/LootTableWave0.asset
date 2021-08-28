@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: LootTableWave0
   m_EditorClassIdentifier: 
   _data:
-    lootOnlyHighestRarity: 1
+    lootOnlyHighestRarity: 0
     loots:
     - loot: {fileID: 11400000, guid: aa2be6dfb4cd9ec40a827b0bf7638637, type: 2}
       chance: 100
       minQuantity: 10
       maxQuantity: 10
-    - loot: {fileID: 11400000, guid: 3968cb8bb70cd2b44a1fe67d58529d69, type: 2}
+    - loot: {fileID: 11400000, guid: 037b048f728dc8049a660aac2f131131, type: 2}
       chance: 100
       minQuantity: 1
       maxQuantity: 1
