@@ -30,12 +30,12 @@ public class DroneFactory : Factory<DroneFactory, DroneSO, Drone>
         newTurret.AddComponent<VisualizeTransform>();
 
         turrComponent.droneReferenceData = turretData;
-        if (turretData.GetLevelData(turrComponent.CurrentLevel).ammo != null)
+        if (turretData.GetCurrentLevelData().ammo != null)
         {
-            turrComponent.ammoData = turretData.GetLevelData(turrComponent.CurrentLevel).ammo.Data;
+            turrComponent.ammoData = turretData.GetCurrentLevelData().ammo.Data;
         }
         turrComponent.walker = newTurret.AddComponent<BezierWalkerWithSpeed>();
-        turrComponent.walker.speed = turretData.GetLevelData(turrComponent.CurrentLevel).maxSpeed;
+        turrComponent.walker.speed = turretData.GetCurrentLevelData().maxSpeed;
         turrComponent.walker.travelMode = TravelMode.Loop;
         turrComponent.walker.rotationLerpModifier = 10f;
 

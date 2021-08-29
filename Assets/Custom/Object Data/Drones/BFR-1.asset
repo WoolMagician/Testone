@@ -13,18 +13,19 @@ MonoBehaviour:
   m_Name: BFR-1
   m_EditorClassIdentifier: 
   _data:
-    droneName: 
+    droneName: BFR-1
+    currentLevel: 0
     droneBehaviourSO: {fileID: 11400000, guid: 16a5ac0b89f0be447bd8af5d9aa41253, type: 2}
     levels:
-    - cost: 10
-      health: 100
-      maxSpeed: 3
-      boostSpeedMultiplier: 0
+    - energyCost: 10
+      health: 0
+      maxSpeed: 2
       fireRate: 0
       damagePerHit: 0
-      patrolSphereRadius: 0
+      damageOnDeath: 0
+      enemyDetectionRadius: 0
       ammo: {fileID: 0}
       droneObject: {fileID: 1335597523914080, guid: b8462cc0fad2b284cb775e5fb7c2dd19, type: 3}
       droneTrail: {fileID: 3041748491912533486, guid: 1e192e0d9e6917d4cace7e056662b6bf, type: 3}
-      droneMuzzleFlash: {fileID: 0}
+      droneMuzzleFlashPrefab: {fileID: 0}
       droneObjectScaleOverride: {x: 0.3, y: 0.3, z: 0.3}

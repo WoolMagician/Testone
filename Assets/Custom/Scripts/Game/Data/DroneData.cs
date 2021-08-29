@@ -9,7 +9,8 @@ public class DroneData : BaseData
     /// <summary>
     /// The name assigned to this drone.
     /// </summary>
-    public string droneName;
+    public string droneName = "New Drone";
+    public int currentLevel = 0;
 
     /// <summary>
     /// Stores ScriptableObject that contains behaviour informations.
@@ -35,6 +36,19 @@ public class DroneData : BaseData
         }
 
         return copiedDroneData;
+    }
+
+
+    public DroneLevelData GetCurrentLevelData()
+    {
+        if (levels != null)
+        {
+            return levels[Mathf.Clamp(currentLevel, 0, levels.Length - 1)];
+        }
+        else
+        {
+            return new DroneLevelData();
+        }
     }
 
     public DroneLevelData GetLevelData(int level)

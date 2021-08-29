@@ -1,5 +1,11 @@
 using UnityEngine;
 
+public enum AmmoType
+{
+    Laser,
+    Bullet
+}
+
 [System.Serializable]
 public class AmmoData : BaseData
 {
@@ -11,6 +17,8 @@ public class AmmoData : BaseData
     public GameObject ammoTrail;
 
     public Vector3 ammoObjectScaleOverride = Vector3.one;
+
+    public AmmoType ammoType;
 
     public override IData Copy()
     {

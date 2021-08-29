@@ -70,11 +70,12 @@ public class DroneMenuButton : MonoBehaviour
                 }
                 turretPreview = Instantiate(turretData.Data.levels[0].droneObject, turretObjectPivot);
                 turretPreview.layer = LayerMask.NameToLayer("UI");
-                turretPreview.transform.localScale = turretData.Data.levels[0].droneObjectScaleOverride * 80;
+                SetLayerAllChildren(turretPreview.transform, LayerMask.NameToLayer("UI"));
+                turretPreview.transform.localScale = turretData.Data.levels[0].droneObjectScaleOverride * 75;
 
                 if (priceTag != null)
                 {
-                    priceTag.text = turretData.Data.levels[0].cost.ToString();
+                    priceTag.text = turretData.Data.levels[0].energyCost.ToString();
                 }
             }
             else
@@ -91,6 +92,17 @@ public class DroneMenuButton : MonoBehaviour
         }
     }
 
+    void SetLayerAllChildren(Transform root, int layer)
+    {
+        var children = root.GetComponentsInChildren<Transform>(includeInactive: true);
+        foreach (var child in children)
+        {
+            //            Debug.Log(child.name);
+            child.gameObject.layer = layer;
+        }
+    }
+
+
     private void OnMouseUp()
     {
         // If no turret data is defined just skip
@@ -98,14 +110,14 @@ public class DroneMenuButton : MonoBehaviour
 
         if (selectedOrbit != null && float.TryParse(selectedOrbit.name, out float radius))
         {
-            if (GameManager.Instance.simulationData.mineralAcquired >= turretData.Data.levels[0].cost)
+            if (GameManager.Instance.simulationData.mineralAcquired >= turretData.Data.levels[0].energyCost)
             {
                 //Start the game with one turret
                 Drone newTurret = DroneFactory.Instance.Create(turretData);
                 newTurret.SetOrbit(OrbitFactory.Instance.Create((int)radius));
 
                 //TurretFactory.CreateTurret(OrbitFactory.Instance.CreateNewOrbit(radius), turretData, ammoData);
-                GameManager.Instance.simulationData.mineralAcquired -= turretData.Data.levels[0].cost;
+                GameManager.Instance.simulationData.mineralAcquired -= turretData.Data.levels[0].energyCost;
             }
             selectedOrbit.GetComponentInParent<OrbitDrawer>().lineWidth = 0.02f;
         }

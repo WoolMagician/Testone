@@ -9,8 +9,6 @@ public class STDroneFireSingleTarget : STDroneMove
 
     public override void EnterState()
     {
-        DroneLevelData data = drone.GetCurrentLevelData();
-        data.maxSpeed = (data.maxSpeed - (data.maxSpeed / 3f));
     }
 
     public override void ExitState()
@@ -65,10 +63,10 @@ public class STDroneFireSingleTarget : STDroneMove
         if (drone.muzzleFlashObject != null) { drone.muzzleFlashObject.SetActive(true); }
 
         //Apply damage to target
-        currentFireTarget.DecreaseHealth((drone.GetCurrentLevelData().damagePerHit *
+        currentFireTarget.DecreaseHealth((drone.droneActualData.GetCurrentLevelData().damagePerHit *
                                           drone.ammoData.damageMultiplier) * orbitDamageMul);
         //Wait for fire rate
-        yield return new WaitForSeconds(drone.GetCurrentLevelData().fireRate - 0.2f);
+        yield return new WaitForSeconds(drone.droneActualData.GetCurrentLevelData().fireRate - 0.2f);
 
         //Reset firing particles
         if (drone.muzzleFlashObject != null) { drone.muzzleFlashObject.SetActive(false); }

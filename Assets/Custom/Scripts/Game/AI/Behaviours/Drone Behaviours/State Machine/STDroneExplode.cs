@@ -23,7 +23,7 @@ public class STDroneExplode : DroneState
     {
         foreach (Enemy enemy in drone.EnemiesWithinRange)
         {
-            enemy.DecreaseHealth(drone.GetCurrentLevelData().damageOnExplode);
+            enemy.DecreaseHealth(drone.droneActualData.GetCurrentLevelData().damageOnDeath);
         }
         Object.Destroy(drone.gameObject);
         yield return new WaitForSeconds(0);

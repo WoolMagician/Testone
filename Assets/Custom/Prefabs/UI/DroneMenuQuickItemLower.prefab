@@ -278,7 +278,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5518054243683324147
 RectTransform:
   m_ObjectHideFlags: 0
@@ -644,8 +644,7 @@ MonoBehaviour:
   buttonImage: {fileID: 5518054244444404006}
   unavailableTurretButtonColor: {r: 1, g: 1, b: 1, a: 0.5019608}
   turretData: {fileID: 11400000, guid: 66d5709e35716d343b042192023ac68b, type: 2}
-  ammoData: {fileID: 11400000, guid: e88f587dac70bb44f9cb35b597668404, type: 2}
-  camera: {fileID: 0}
+  cam: {fileID: 0}
   canvas: {fileID: 0}
   turretObjectPivot: {fileID: 5518054243344438708}
   turretPreview: {fileID: 0}

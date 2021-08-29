@@ -25,7 +25,7 @@ public class STDroneMove : DroneState
         if (walker == null || walker.spline == null) return;
 
         // Set speed
-        walker.speed = drone.GetCurrentLevelData().maxSpeed * speedMultiplier;
+        walker.speed = drone.droneActualData.GetCurrentLevelData().maxSpeed * speedMultiplier;
 
         // Execute walker
         walker.Execute(Time.deltaTime);

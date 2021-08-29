@@ -77,23 +77,28 @@ public class Enemy : NotificationPublisher, IHasHealth , IHasPowerUPs
         this.Health = Mathf.Clamp(this.Health - value, 0, this.enemyActualData.maxHealth);        
     }
 
+    private object lockObj = new object();
+
     public void Die()
     {
-        //Request loot
-        this.Notify(new LootRequestNotificationEventArgs(this.enemyActualData.lootTableSO.Data, this.gameObject));
-
-        //Notify death
-        this.Notify(new EnemyDeathNotificationEventArgs(this));
-
-        //Instantiate die particles
-        if (enemyActualData.enemyDieParticles != null)
+        lock(lockObj)
         {
-            Instantiate(enemyActualData.enemyDieParticles,
-                        this.transform.position,
-                        Quaternion.identity).transform.localScale = enemyActualData.enemyDieParticlesScaleOverride;
-        }
+            //Request loot
+            this.Notify(new LootRequestNotificationEventArgs(this.enemyActualData.lootTableSO.Data, this.gameObject));
 
-        //Destroy game object
-        Destroy(this.gameObject);
+            //Notify death
+            this.Notify(new EnemyDeathNotificationEventArgs(this));
+
+            //Instantiate die particles
+            if (enemyActualData.enemyDieParticles != null)
+            {
+                Instantiate(enemyActualData.enemyDieParticles,
+                            this.transform.position,
+                            Quaternion.identity).transform.localScale = enemyActualData.enemyDieParticlesScaleOverride;
+            }
+
+            //Destroy game object
+            Destroy(this.gameObject);
+        }
     }
 }

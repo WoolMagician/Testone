@@ -65,10 +65,12 @@
     <Compile Include="Assets\Custom\Scripts\Other\FXVShield.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Data\ResourceData.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\LerpTransformers\DelegateLerpTransformer.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Drone Behaviours\State Machine\STDroneMove.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Data\ShieldData.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\CamerasBehaviours\MultiCameraController.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\Events\VerticalDegreesListener.cs" />
     <Compile Include="Assets\Custom\UI\Scripts\JustRotate.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\PowerUPs\IHasPowerUPs.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\NotificationPublisher.cs" />
     <Compile Include="Assets\Custom\Scripts\StateMachine\StateMachine.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\Components\ComponentNotInitializedException.cs" />
@@ -79,7 +81,6 @@
     <Compile Include="Assets\Custom\Scripts\Camera\LerpTransformers\DoNothingLerpTransformer.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\CamerasBehaviours\FollowCameraController.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\Components\InputComponent.cs" />
-    <Compile Include="Assets\Custom\Scripts\Attributes\EditorRenameAttribute.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\CamerasBehaviours\LockTargetCameraController.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\Components\HeadbobComponent.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Managers\SceneController.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Assets\Custom\Scripts\Game\Factories\DroneFactory.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\CamerasBehaviours\BasicCameraController.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Objects\Missile.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Drone Behaviours\State Machine\STDroneExplode.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Managers\GameManager.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Data\DroneData.cs" />
     <Compile Include="Assets\Custom\Scripts\Singleton.cs" />
@@ -120,7 +122,6 @@
     <Compile Include="Assets\Custom\Scripts\Camera\CamerasBehaviours\FollowCameraControllerOldV1.cs" />
     <Compile Include="Assets\Custom\Scripts\Audio\Sound.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Scriptable Objects\Simple Objects\LootSO.cs" />
-    <Compile Include="Assets\Custom\Scripts\Example.cs" />
     <Compile Include="Assets\Custom\Scripts\Other\OrbitDrawer.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Interfaces\INotificationObserver.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Objects\Enemy.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Assets\Custom\Scripts\Camera\Components\RotationComponent.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Scriptable Objects\Simple Objects\OrbitSO.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\CamerasBehaviours\CameraController.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\PowerUPs\IPowerUP.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\Components\ViewCollisionComponent.cs" />
     <Compile Include="Assets\Custom\Scripts\StateMachine\BaseState.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\Components\SwitchTargetComponent.cs" />
@@ -142,16 +144,19 @@
     <Compile Include="Assets\Polygon Arsenal\Demo\Scripts\PolygonSceneSelect.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Data\DroneLevelData.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\Events\HorizontalDegreesListener.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Drone Behaviours\KamikazeDroneBehaviour.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Factories\OrbitFactory.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Objects\Shield.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Objects\Orbit.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\Components\ScreenShakeComponent.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Drone Behaviours\State Machine\STDroneFireSingleTarget.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Data\AmmoData.cs" />
     <Compile Include="Assets\Custom\Scripts\Utilities\VisualizeTransform.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Scriptable Objects\Simple Objects\AmmoSO.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\UI\DroneMenuButton.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Scriptable Objects\Simple Objects\MissileSO.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Drone Behaviours\Base\DroneBehaviour.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Enemy Behaviours\Base\EnemyState.cs" />
     <Compile Include="Assets\InputEventManager.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Scriptable Objects\Simple Objects\ResourceSO.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\Components\CursorComponent.cs" />
@@ -162,6 +167,7 @@
     <Compile Include="Assets\Custom\Scripts\Game\Scriptable Objects\Simple Objects\ShieldSO.cs" />
     <Compile Include="Assets\Custom\Scripts\StateMachine\IState.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Scriptable Objects\Simple Objects\EnemySO.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\Scriptable Objects\ScriptableDataContainer.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\Components\MultipleRelativeTargetComponent.cs" />
     <Compile Include="Assets\Custom\Scripts\Camera\CamerasBehaviours\BasicCameraControllerOldV1.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Objects\Loot.cs" />
@@ -181,6 +187,7 @@
     <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Drone Behaviours\Base\DroneState.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Interfaces\IHasHealth.cs" />
     <Compile Include="Assets\Custom\Scripts\Attributes\ShowOnlyAttribute.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Drone Behaviours\EnergyDroneBehaviour.cs" />
     <Compile Include="Assets\Polygon Arsenal\Demo\Scripts\PolygonOrbit.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Managers\AudioManager.cs" />
     <Compile Include="Assets\Polygon Arsenal\Scripts\PolygonRotation.cs" />
@@ -188,14 +195,16 @@
     <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Drone Behaviours\PatrolDroneBehaviour.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Managers\UIManager.cs" />
     <Compile Include="Assets\Custom\Scripts\Game\Objects\Drone.cs" />
-    <Compile Include="Assets\Custom\Scripts\Game\PowerUPs\IPowerUP.cs" />
-    <Compile Include="Assets\Custom\Scripts\Game\PowerUPs\IHasPowerUPs.cs" />
-    <Compile Include="Assets\Custom\Scripts\Game\Scriptable Objects\ScriptableDataContainer.cs" />
-    <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Enemy Behaviours\Base\EnemyState.cs" />
-    <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Drone Behaviours\KamikazeDroneBehaviour.cs" />
-    <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Drone Behaviours\State Machine\STDroneExplode.cs" />
-    <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Drone Behaviours\State Machine\STDroneMove.cs" />
-    <Compile Include="Assets\Custom\Scripts\Game\AI\Behaviours\Drone Behaviours\State Machine\STDroneFireSingleTarget.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\PowerUPs\BasePowerUP.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\Simulation\SMSimulation.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\Simulation\States\STSimulationInitialize.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\Simulation\States\STSimulationStart.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\Simulation\States\STSimulationPause.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\Simulation\States\STSimulationWaveProcess.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\Simulation\States\STSimulationWaveRequest.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\Simulation\States\STSimulationWaveWaitDropPickup.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\Simulation\States\STSimulationWaveEnd.cs" />
+    <Compile Include="Assets\Custom\Scripts\Game\Simulation\States\STSimulationWaveStart.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

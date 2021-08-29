@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public interface IPowerUP
 {
     void ApplyPowerUP(IData data);

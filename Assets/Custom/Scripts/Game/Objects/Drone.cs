@@ -1,66 +1,112 @@
 ﻿using BezierSolution;
-using DG.Tweening;
-using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
+
+#region POWERUPs
 
 [System.Serializable]
-public class DroneSpeedPU : IPowerUP
+public class DroneLockOnEnemyPU : DroneSpeedPU
 {
-    public float speedMultiplier = 2f;
+    public DroneLockOnEnemyPU(float speedMultiplier, Drone referenceDrone) : base(speedMultiplier, referenceDrone)
+    {
+    }
 
-    public void ApplyPowerUP(IData data)
+    public override void ApplyPowerUP(IData data)
+    {
+        if(referenceDrone.EnemiesWithinRange.Count > 0)
+        {            
+            base.ApplyPowerUP(data);
+        }
+    }
+}
+
+[System.Serializable]
+public class DroneSpeedPU : BasePowerUP
+{
+    [SerializeField]
+    protected float speedMultiplier = 1f;
+    protected Drone referenceDrone;
+
+    public DroneSpeedPU(float speedMultiplier, Drone referenceDrone)
+    {
+        this.speedMultiplier = speedMultiplier;
+        this.referenceDrone = referenceDrone;
+    }
+
+    public override void ApplyPowerUP(IData data)
     {
         DroneLevelData droneLevelData = (DroneLevelData)data;
         droneLevelData.maxSpeed = droneLevelData.maxSpeed * speedMultiplier;
     }
 }
 
-public class Drone : MonoBehaviour, 
-    IHasPowerUPs {
+#endregion
+
+public class Drone : MonoBehaviour, IHasPowerUPs
+{
+    #region ATTRIBUTES
+
+    [ShowOnly]
+    [SerializeField]
+    private bool _initialized = false;
 
     [SerializeField]
-    private DroneData droneActualData;
-    public DroneData droneReferenceData;
-    public AmmoData ammoData;
+    public DroneData droneActualData;
 
-    public Orbit orbit;
-    public GameObject droneObject;
-    public GameObject droneTrailObject;
-    public GameObject muzzleFlashObject;
+    [HideInInspector]
+    public DroneData droneReferenceData;
+
+    [HideInInspector]
+    public AmmoData ammoData;
 
     [SerializeField]
     private List<Enemy> enemiesWithinRange = new List<Enemy>();
 
-    [SerializeField]
-    private int currentLevel = 0;
+    [HideInInspector]
+    private GameObject droneObject;
 
+    [HideInInspector]
+    private GameObject droneTrailObject;
+
+    [HideInInspector]
+    public GameObject muzzleFlashObject;
+
+    [HideInInspector]
+    public Orbit orbit;
+
+    [HideInInspector]
     public DroneBehaviour behaviour;
+
+    [HideInInspector]
     public BezierWalkerWithSpeed walker;
 
+    #endregion
+
+    #region PROPERTIES
+
+    public bool Initialized { get => _initialized; }
+
     public List<IPowerUP> PowerUPs { get; set; } = new List<IPowerUP>();
-    public int CurrentLevel { get => currentLevel; private set => currentLevel = value; }
+
     public List<Enemy> EnemiesWithinRange { get => enemiesWithinRange; }
 
-    public DroneLevelData GetCurrentLevelData()
-    {
-        if (droneActualData != null)
-        {
-            return droneActualData.GetLevelData(currentLevel);
-        }
-        else
-            return null;
-    }
+    #endregion
 
-    void Start()
+    private void Start()
     {
         //Initialize drone object
-        this.Initialize();
+        this._initialized = this.Initialize();
     }
 
     private void Update()
     {
+        //Da eliminare, solo per test
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            this.PowerUPs.Add(new DroneLockOnEnemyPU(0.5f, this));
+        }
 
+        //Get all enemies withing patrol bounds
         this.GetEnemiesWithinRange();
 
         //Apply drone level data
@@ -80,22 +126,24 @@ public class Drone : MonoBehaviour,
 
         try
         {
+            //Probabilmente dovrebbe essere spostato nel metodo di factory.
+
             Destroy(droneObject);
             Destroy(droneTrailObject);
 
-            if(GetCurrentLevelData() != null)
+            if(droneActualData != null)
             {
-                droneObject = Instantiate(GetCurrentLevelData().droneObject, this.transform);
-                droneObject.transform.localScale = GetCurrentLevelData().droneObjectScaleOverride;
+                droneObject = Instantiate(droneActualData.GetCurrentLevelData().droneObject, this.transform);
+                droneObject.transform.localScale = droneActualData.GetCurrentLevelData().droneObjectScaleOverride;
 
-                if(GetCurrentLevelData().droneTrail != null)
+                if(droneActualData.GetCurrentLevelData().droneTrail != null)
                 {
-                    droneTrailObject = Instantiate(GetCurrentLevelData().droneTrail, droneObject.transform);
+                    droneTrailObject = Instantiate(droneActualData.GetCurrentLevelData().droneTrail, droneObject.transform);
                 }
 
-                if (GetCurrentLevelData().droneMuzzleFlash != null)
+                if (droneActualData.GetCurrentLevelData().droneMuzzleFlashPrefab != null)
                 {
-                    muzzleFlashObject = Instantiate(GetCurrentLevelData().droneMuzzleFlash, droneObject.transform);
+                    muzzleFlashObject = Instantiate(droneActualData.GetCurrentLevelData().droneMuzzleFlashPrefab, droneObject.transform);
                 }
                 behaviour = droneActualData.droneBehaviourSO.GetBehaviourScript();
             }
@@ -108,23 +156,30 @@ public class Drone : MonoBehaviour,
         return true;
     }
 
-    public void GetEnemiesWithinRange()
+    private void GetEnemiesWithinRange()
     {
-        enemiesWithinRange.Clear();
-        Collider[] colliders = Physics.OverlapSphere(this.transform.position, this.GetCurrentLevelData().patrolSphereRadius, LayerMask.GetMask(EnemyFactory.Instance.ObjectName));
+        /* Utilizzo OverlapSphere al posto del collider
+         * per ottimizzazione e migliore gestione
+         * della lista dei nemici
+         */
 
+        enemiesWithinRange.Clear();
+        Collider[] colliders = Physics.OverlapSphere(this.transform.position, this.droneActualData.GetCurrentLevelData().enemyDetectionRadius, LayerMask.GetMask(EnemyFactory.Instance.ObjectName));
+
+        //Probabilmente è meglio farlo con una linQ
         foreach (Collider collider in colliders)
         {
             enemiesWithinRange.Add(collider.GetComponent<Enemy>());
         }
     }
 
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, this.GetCurrentLevelData().patrolSphereRadius);
+        //Draw enemy detection sphere
+        Gizmos.DrawWireSphere(transform.position, this.droneActualData.GetCurrentLevelData().enemyDetectionRadius);
     }
 
-    public void ApplyDroneData()
+    private void ApplyDroneData()
     {
         if (droneReferenceData != null)
             droneActualData = (DroneData)droneReferenceData.Copy();                    
@@ -132,14 +187,17 @@ public class Drone : MonoBehaviour,
 
     public void ApplyPowerUPs()
     {
-        foreach (IPowerUP item in PowerUPs)
+        if (droneActualData != null)
         {
-            // Apply powerup chain only to current level
-            item.ApplyPowerUP(GetCurrentLevelData());
+            foreach (IPowerUP item in PowerUPs)
+            {
+                // Apply powerup chain only to current level
+                item.ApplyPowerUP(droneActualData.GetCurrentLevelData());
+            }
         }
     }
 
-    public void ApplyBehaviour()
+    private void ApplyBehaviour()
     {
         if (this.behaviour != null)
             this.behaviour.Behave(this);
@@ -150,30 +208,4 @@ public class Drone : MonoBehaviour,
         this.orbit = orbit;
         walker.spline = orbit.OrbitSpline;
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.layer == LayerMask.NameToLayer(EnemyFactory.Instance.ObjectName))
-    //    {
-    //        Enemy enemy = other.GetComponent<Enemy>();
-
-    //        if (!enemiesWithinRange.Contains(enemy))
-    //        {                
-    //            enemiesWithinRange.Add(enemy);
-    //        }
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.gameObject.layer == LayerMask.NameToLayer(EnemyFactory.Instance.ObjectName))
-    //    {
-    //        Enemy enemy = other.GetComponent<Enemy>();
-
-    //        if (enemiesWithinRange.Contains(enemy))
-    //        {
-    //            enemiesWithinRange.Remove(enemy);
-    //        }
-    //    }
-    //}
 }

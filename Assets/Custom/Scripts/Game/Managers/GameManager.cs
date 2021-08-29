@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager> , INotificationObserver
 {
     public SimulationData simulationData;
+    public SMSimulation smSimulation = new SMSimulation();
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,12 @@ public class GameManager : Singleton<GameManager> , INotificationObserver
         InputEventManager.Instance.OnLootClick += Instance.HandleLootClick;
         InputEventManager.Instance.OnEnemyClick += Instance.HandleEnemyClick;
         InputEventManager.Instance.OnPlanetClick += Instance.HandlePlanetClick;
+    }
+
+    void Update()
+    {
+        // Update simulation state machine
+        smSimulation.Update();
     }
 
     public void OnNotification(NotificationEventArgs args)
@@ -72,16 +79,15 @@ public class GameManager : Singleton<GameManager> , INotificationObserver
 
     private void HandleNewShieldLoot(Loot loot)
     {
-        //if (Planet.Instance.shield.ShieldSO.Equals((MissileSO)loot.lootData.lootSO))
-        {                       
-            if (this.simulationData.shieldHitsLeft + loot.lootData.quantity <= 3)
-            {
-                this.simulationData.shieldHitsLeft += loot.lootData.quantity;
 
-                if (!Planet.Instance.shield.shieldActive)
-                    StartCoroutine(Planet.Instance.shield.ActivateAfterTime(0));
-            }
+        if (this.simulationData.shieldHitsLeft + loot.lootData.quantity <= 3)
+        {
+            this.simulationData.shieldHitsLeft += loot.lootData.quantity;
+
+            if (!Planet.Instance.shield.shieldActive)
+                StartCoroutine(Planet.Instance.shield.ActivateAfterTime(0));
         }
+
     }
 
     private void HandleNewMissileLoot(Loot loot)

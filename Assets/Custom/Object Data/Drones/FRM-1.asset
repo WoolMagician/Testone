@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836da5b04bbd23b43a799fafdb90b94c, type: 3}
+  m_Name: FRM-1
+  m_EditorClassIdentifier: 
+  _data:
+    droneName: FRM-1
+    currentLevel: 0
+    droneBehaviourSO: {fileID: 11400000, guid: 6eb64f46bca0ee24e93fa84a39bebbed, type: 2}
+    levels:
+    - energyCost: 10
+      health: 0
+      maxSpeed: 2
+      fireRate: 0
+      damagePerHit: 0
+      damageOnDeath: 0
+      enemyDetectionRadius: 3
+      ammo: {fileID: 0}
+      droneObject: {fileID: 1351672424428750, guid: fbaa6aa5800696e4cb270b18113c91ce, type: 3}
+      droneTrail: {fileID: 1062157001075556, guid: eac7894746a985341a280e45d7abac75, type: 3}
+      droneMuzzleFlashPrefab: {fileID: 0}
+      droneObjectScaleOverride: {x: 1.2, y: 1.2, z: 1.2}
