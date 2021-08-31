@@ -56,8 +56,8 @@
     <Compile Include="Assets\Custom\Scripts\Editor\FXVShieldHitMaterialEditor.cs" />
     <Compile Include="Assets\Custom\Scripts\Editor\ShieldEditor.cs" />
     <Compile Include="Assets\Custom\Scripts\Editor\FXVShieldMaterialEditor.cs" />
-    <Compile Include="Assets\Custom\Scripts\Editor\ShowOnlyDrawer.cs" />
     <Compile Include="Assets\Custom\Scripts\Editor\ArrayElementTitleDrawer.cs" />
+    <Compile Include="Assets\Custom\Scripts\Editor\ShowOnlyDrawer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

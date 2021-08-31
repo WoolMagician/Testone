@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c09cc42f91172344cb4a6926dfbbc144, type: 3}
+  m_Name: CargoAdriftSmall
+  m_EditorClassIdentifier: 
+  _data:
+    speed: 0.3
+    maxHealth: 30
+    enemyBehaviourSO: {fileID: 11400000, guid: c0fc6afe4e5cc2c41bee8e2ec126e745, type: 2}
+    lootTableSO: {fileID: 11400000, guid: c57755cea9be98349a12de047d4f191d, type: 2}
+    enemyObjectVariants:
+    - {fileID: 1618797515792128, guid: 59c52aad69955654794f62765f1da656, type: 3}
+    enemyMaterial: {fileID: 2100000, guid: 4cee7a5983b187943adc589b9cb1f084, type: 2}
+    enemyTrail: {fileID: 0}
+    enemyDieParticles: {fileID: 1479196316444936, guid: d1a0124dd9bd9434a83ec458fd2bbeb0, type: 3}
+    enemyObjectScaleOverride: {x: 0.02, y: 0.02, z: 0.02}
+    enemyTrailScaleOverride: {x: 1, y: 1, z: 1}
+    enemyDieParticlesScaleOverride: {x: 1.5, y: 1.5, z: 1.5}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager> , INotificationObserver
 {
-    public SimulationData simulationData;
+    public SimulationData simulationData = new SimulationData();
     public SMSimulation smSimulation = new SMSimulation();
 
     // Start is called before the first frame update
@@ -20,6 +20,8 @@ public class GameManager : Singleton<GameManager> , INotificationObserver
         InputEventManager.Instance.OnLootClick += Instance.HandleLootClick;
         InputEventManager.Instance.OnEnemyClick += Instance.HandleEnemyClick;
         InputEventManager.Instance.OnPlanetClick += Instance.HandlePlanetClick;
+
+        simulationData.mineralAcquired = 10;
     }
 
     void Update()
@@ -108,6 +110,25 @@ public class GameManager : Singleton<GameManager> , INotificationObserver
         */
     }
 
+    private void HandleNewPowerupLoot(Loot loot)
+    {
+        foreach (Drone drone in DroneFactory.Instance.CreatedObjects)
+        {
+            if(drone != null)
+            {
+                //Add on hit effect if is not applied yet
+                if (!drone.PowerUPs.ContainsOfType(loot.lootData.lootSO))
+                {
+                    drone.PowerUPs.Add(((PowerUPSO)loot.lootData.lootSO).PowerUP);
+                }
+                else
+                {
+                    ((BasePowerUP)drone.PowerUPs.GetOfType(loot.lootData.lootSO)).StackDuration();
+                }
+            }
+        }
+    }
+
     private void ProcessNewLoot(Loot loot)
     {
         if(loot != null)
@@ -129,6 +150,9 @@ public class GameManager : Singleton<GameManager> , INotificationObserver
                     break;
                 case LootType.Missile:
                     this.HandleNewMissileLoot(loot);
+                    break;
+                case LootType.Powerup:
+                    this.HandleNewPowerupLoot(loot);
                     break;
                 default:
                     Debug.LogWarning(string.Format("Loot type '{0}' is not supported.", type.Name));

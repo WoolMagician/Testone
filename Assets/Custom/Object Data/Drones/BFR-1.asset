@@ -15,7 +15,8 @@ MonoBehaviour:
   _data:
     droneName: BFR-1
     currentLevel: 0
-    droneBehaviourSO: {fileID: 11400000, guid: 16a5ac0b89f0be447bd8af5d9aa41253, type: 2}
+    droneBehaviourSO: {fileID: 11400000, guid: 30852cb4644be974689cb7c0ce78358b, type: 2}
+    PowerUPs: []
     levels:
     - energyCost: 10
       health: 0

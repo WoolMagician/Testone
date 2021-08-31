@@ -1,46 +1,8 @@
 ﻿using BezierSolution;
 using System.Collections.Generic;
 using UnityEngine;
-
-#region POWERUPs
-
-[System.Serializable]
-public class DroneLockOnEnemyPU : DroneSpeedPU
-{
-    public DroneLockOnEnemyPU(float speedMultiplier, Drone referenceDrone) : base(speedMultiplier, referenceDrone)
-    {
-    }
-
-    public override void ApplyPowerUP(IData data)
-    {
-        if(referenceDrone.EnemiesWithinRange.Count > 0)
-        {            
-            base.ApplyPowerUP(data);
-        }
-    }
-}
-
-[System.Serializable]
-public class DroneSpeedPU : BasePowerUP
-{
-    [SerializeField]
-    protected float speedMultiplier = 1f;
-    protected Drone referenceDrone;
-
-    public DroneSpeedPU(float speedMultiplier, Drone referenceDrone)
-    {
-        this.speedMultiplier = speedMultiplier;
-        this.referenceDrone = referenceDrone;
-    }
-
-    public override void ApplyPowerUP(IData data)
-    {
-        DroneLevelData droneLevelData = (DroneLevelData)data;
-        droneLevelData.maxSpeed = droneLevelData.maxSpeed * speedMultiplier;
-    }
-}
-
-#endregion
+using System.Linq;
+using System;
 
 public class Drone : MonoBehaviour, IHasPowerUPs
 {
@@ -61,6 +23,9 @@ public class Drone : MonoBehaviour, IHasPowerUPs
 
     [SerializeField]
     private List<Enemy> enemiesWithinRange = new List<Enemy>();
+
+    [SerializeField]
+    public List<Enemy> LockedEnemiesForCombat = new List<Enemy>();
 
     [HideInInspector]
     private GameObject droneObject;
@@ -100,12 +65,6 @@ public class Drone : MonoBehaviour, IHasPowerUPs
 
     private void Update()
     {
-        //Da eliminare, solo per test
-        if(Input.GetKeyDown(KeyCode.U))
-        {
-            this.PowerUPs.Add(new DroneLockOnEnemyPU(0.5f, this));
-        }
-
         //Get all enemies withing patrol bounds
         this.GetEnemiesWithinRange();
 
@@ -145,7 +104,13 @@ public class Drone : MonoBehaviour, IHasPowerUPs
                 {
                     muzzleFlashObject = Instantiate(droneActualData.GetCurrentLevelData().droneMuzzleFlashPrefab, droneObject.transform);
                 }
-                behaviour = droneActualData.droneBehaviourSO.GetBehaviourScript();
+                behaviour = droneActualData.droneBehaviourSO.Behaviour;
+
+                //Nonfunge
+                foreach (BasePowerUP item in droneActualData.PowerUPs.Select(x => x.PowerUP))
+                {
+                    this.PowerUPs.Add((BasePowerUP)Activator.CreateInstance(item.GetType()));
+                }               
             }
         }
         catch
@@ -182,17 +147,18 @@ public class Drone : MonoBehaviour, IHasPowerUPs
     private void ApplyDroneData()
     {
         if (droneReferenceData != null)
-            droneActualData = (DroneData)droneReferenceData.Copy();                    
+            droneActualData = (DroneData)droneReferenceData.Copy();      
+
     }
 
     public void ApplyPowerUPs()
     {
         if (droneActualData != null)
         {
-            foreach (IPowerUP item in PowerUPs)
+            foreach (IPowerUP item in PowerUPs) // Concat drone data powerups with actual ones
             {
                 // Apply powerup chain only to current level
-                item.ApplyPowerUP(droneActualData.GetCurrentLevelData());
+                item.ApplyPowerUP(droneActualData.GetCurrentLevelData(), this);
             }
         }
     }

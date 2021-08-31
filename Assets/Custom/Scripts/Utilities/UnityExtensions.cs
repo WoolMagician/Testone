@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using System.Linq;
 
 public static class UnityExtensions
 {
@@ -47,5 +48,18 @@ public static class UnityExtensions
             }
         }
         return resultList;
+    }
+
+
+    public static bool ContainsOfType<T>(this List<T> list, object objectTypeToSearch) where T : class
+    {
+        Type typeToSearch = objectTypeToSearch.GetType();
+        return list.Where(x => x.GetType() == typeToSearch).Select(z => z).Any();
+    }
+
+    public static T GetOfType<T>(this List<T> list, object objectTypeToSearch) where T : class
+    {
+        Type typeToSearch = objectTypeToSearch.GetType();
+        return list.Where(x => x.GetType() == typeToSearch).Select(z => z).FirstOrDefault();
     }
 }

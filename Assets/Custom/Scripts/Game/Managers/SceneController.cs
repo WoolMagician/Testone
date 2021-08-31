@@ -7,7 +7,7 @@ public class SceneController : Singleton<SceneController>
 {
 
     private bool loadScene = false;
-    private bool gameStarted = false;
+    //private bool gameStarted = false;
 
     [SerializeField]
     private int scene;
@@ -102,8 +102,8 @@ public class SceneController : Singleton<SceneController>
         
     }
 
-    bool fadingOut = false;
-    bool fadingIn = false;
+    //bool fadingOut = false;
+    //bool fadingIn = false;
 
     private IEnumerator FadeOut()
     {
@@ -122,7 +122,7 @@ public class SceneController : Singleton<SceneController>
             yield return null;
         }
 
-        fadingOut = false;
+        //fadingOut = false;
     }
 
     private IEnumerator FadeIn()
@@ -144,7 +144,7 @@ public class SceneController : Singleton<SceneController>
             yield return null;
         }
 
-        fadingIn = false;
+        //fadingIn = false;
     }
 
     // The coroutine runs on its own at the same time as Update() and takes an integer indicating which scene to load.

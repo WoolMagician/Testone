@@ -15,7 +15,8 @@ MonoBehaviour:
   _data:
     droneName: STG-1
     currentLevel: 0
-    droneBehaviourSO: {fileID: 0}
+    droneBehaviourSO: {fileID: 11400000, guid: 4a7cf9de2e3b8234fb4b43e6f6354807, type: 2}
+    PowerUPs: []
     levels:
     - energyCost: 35
       health: 100

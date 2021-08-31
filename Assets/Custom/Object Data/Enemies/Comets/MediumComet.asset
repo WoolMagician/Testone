@@ -15,9 +15,12 @@ MonoBehaviour:
   _data:
     speed: 1
     maxHealth: 30
-    spawnRate: 1
-    lootTable: {fileID: 0}
-    enemyObject: {fileID: 0}
+    enemyBehaviourSO: {fileID: 11400000, guid: 47fdca90d4ff6f24e91c0f3b159ce085, type: 2}
+    lootTableSO: {fileID: 0}
+    enemyObjectVariants: []
+    enemyMaterial: {fileID: 0}
     enemyTrail: {fileID: 0}
     enemyDieParticles: {fileID: 0}
     enemyObjectScaleOverride: {x: 1, y: 1, z: 1}
+    enemyTrailScaleOverride: {x: 1, y: 1, z: 1}
+    enemyDieParticlesScaleOverride: {x: 1, y: 1, z: 1}

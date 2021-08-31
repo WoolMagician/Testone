@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Enemy : NotificationPublisher, IHasHealth , IHasPowerUPs
 {
     public EnemyData enemyActualData;
     public EnemyData enemyReferenceData;
     public EnemyBehaviour behaviour;
-        
+
     public event HealthChangedArgs OnHealthChanged;
+
     private float _health;
 
     public float Health {
@@ -45,7 +47,7 @@ public class Enemy : NotificationPublisher, IHasHealth , IHasPowerUPs
         foreach (IPowerUP item in PowerUPs)
         {
             // Apply powerup chain only to current level
-            item.ApplyPowerUP(enemyActualData);
+            item.ApplyPowerUP(enemyActualData, this);
         }
     }
 
@@ -58,7 +60,7 @@ public class Enemy : NotificationPublisher, IHasHealth , IHasPowerUPs
     public void SetEnemyData(EnemyData enemyData)
     {
         enemyReferenceData = enemyData;
-        this.behaviour = enemyReferenceData.enemyBehaviourSO.GetBehaviourScript();
+        this.behaviour = enemyReferenceData.enemyBehaviourSO.Behaviour;
         this._health = enemyReferenceData.maxHealth;
     }
 
@@ -74,7 +76,7 @@ public class Enemy : NotificationPublisher, IHasHealth , IHasPowerUPs
 
     public void DecreaseHealth(float value)
     {
-        this.Health = Mathf.Clamp(this.Health - value, 0, this.enemyActualData.maxHealth);        
+        this.Health = Mathf.Clamp(this.Health - value, 0, this.enemyActualData.maxHealth);
     }
 
     private object lockObj = new object();
@@ -84,7 +86,7 @@ public class Enemy : NotificationPublisher, IHasHealth , IHasPowerUPs
         lock(lockObj)
         {
             //Request loot
-            this.Notify(new LootRequestNotificationEventArgs(this.enemyActualData.lootTableSO.Data, this.gameObject));
+            this.Notify(new LootRequestNotificationEventArgs(Instantiate(this.enemyActualData.lootTableSO).Data, this.gameObject));
 
             //Notify death
             this.Notify(new EnemyDeathNotificationEventArgs(this));

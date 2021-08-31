@@ -30,6 +30,7 @@ public class STDroneFireSingleTarget : STDroneMove
         else
         {
             currentFireTarget = null;
+            drone.LockedEnemiesForCombat.Clear();
         }
 
         //Fire logic
@@ -65,6 +66,10 @@ public class STDroneFireSingleTarget : STDroneMove
         //Apply damage to target
         currentFireTarget.DecreaseHealth((drone.droneActualData.GetCurrentLevelData().damagePerHit *
                                           drone.ammoData.damageMultiplier) * orbitDamageMul);
+
+        //Notify hit
+        currentFireTarget.Notify(new EnemyHitNotificationEventArgs(currentFireTarget, drone.gameObject));
+
         //Wait for fire rate
         yield return new WaitForSeconds(drone.droneActualData.GetCurrentLevelData().fireRate - 0.2f);
 

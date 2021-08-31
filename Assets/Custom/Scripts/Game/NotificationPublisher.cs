@@ -25,4 +25,9 @@ public class NotificationPublisher : MonoBehaviour
     {
         observers.Remove(observer); 
     }
+
+    public void RemoveAllObservers()
+    {
+        observers.Clear();
+    }
 }

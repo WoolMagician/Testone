@@ -15,7 +15,9 @@ MonoBehaviour:
   _data:
     droneName: FRM-1
     currentLevel: 0
-    droneBehaviourSO: {fileID: 11400000, guid: 6eb64f46bca0ee24e93fa84a39bebbed, type: 2}
+    droneBehaviourSO: {fileID: 11400000, guid: 30852cb4644be974689cb7c0ce78358b, type: 2}
+    PowerUPs:
+    - {fileID: 11400000, guid: 8503bc6dde7f98e44a190430ad103668, type: 2}
     levels:
     - energyCost: 10
       health: 0
@@ -23,7 +25,7 @@ MonoBehaviour:
       fireRate: 0
       damagePerHit: 0
       damageOnDeath: 0
-      enemyDetectionRadius: 3
+      enemyDetectionRadius: 0
       ammo: {fileID: 0}
       droneObject: {fileID: 1351672424428750, guid: fbaa6aa5800696e4cb270b18113c91ce, type: 3}
       droneTrail: {fileID: 1062157001075556, guid: eac7894746a985341a280e45d7abac75, type: 3}

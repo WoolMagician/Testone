@@ -6,7 +6,20 @@ using UnityEngine;
         public GameObject publisher;
     }
 
-    public class EnemyDeathNotificationEventArgs : NotificationEventArgs
+public class EnemyHitNotificationEventArgs : NotificationEventArgs
+{
+    public Enemy enemy;
+    public GameObject hitter;
+
+    public EnemyHitNotificationEventArgs(Enemy enemy, GameObject hitter)
+    {
+        this.publisher = enemy.gameObject;
+        this.enemy = enemy;
+        this.hitter = hitter;
+    }
+}
+
+public class EnemyDeathNotificationEventArgs : NotificationEventArgs
     {
         public Enemy enemy;
 

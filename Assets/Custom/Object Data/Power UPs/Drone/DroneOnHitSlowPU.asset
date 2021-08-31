@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23f7feea1cd16cf42aed6e4ea73d223a, type: 3}
+  m_Name: DroneOnHitSlowPU
+  m_EditorClassIdentifier: 
+  _powerup:
+    duration: 0
+    onHitEffectSO: {fileID: 11400000, guid: 35234692ec5c2394a8d5dcd1597fe363, type: 2}

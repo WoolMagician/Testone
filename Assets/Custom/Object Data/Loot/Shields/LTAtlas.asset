@@ -17,5 +17,5 @@ MonoBehaviour:
     name: Atlas
     rarity: 1
     type: 3
-    destroyAfterSeconds: 20
+    destroyAfterSeconds: 30
     lootSO: {fileID: 11400000, guid: 1b87f337e13d2d148a1b05d5a4525c00, type: 2}

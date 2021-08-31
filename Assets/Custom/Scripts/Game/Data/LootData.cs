@@ -16,7 +16,8 @@ public enum LootType
     Drone,
     Shield,
     Missile,
-    Ammo
+    Ammo,
+    Powerup
 }
 
 [System.Serializable]

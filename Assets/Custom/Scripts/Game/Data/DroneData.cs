@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -17,6 +18,9 @@ public class DroneData : BaseData
     /// </summary>
     public DroneBehaviourSO droneBehaviourSO;
 
+    [SerializeReference]
+    public List<PowerUPSO> PowerUPs;
+
     [SerializeField]
     public DroneLevelData[] levels = new DroneLevelData[3];
 
@@ -29,11 +33,13 @@ public class DroneData : BaseData
         };
 
         copiedDroneData.levels = new DroneLevelData[levels.Length];
+        copiedDroneData.PowerUPs = this.PowerUPs;
 
         for (int i = 0; i < levels.Length; i++)
         {
             copiedDroneData.levels[i] = (DroneLevelData)levels[i].Copy();
         }
+
 
         return copiedDroneData;
     }

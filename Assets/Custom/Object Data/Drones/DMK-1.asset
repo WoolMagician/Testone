@@ -15,7 +15,9 @@ MonoBehaviour:
   _data:
     droneName: DMK-1
     currentLevel: 0
-    droneBehaviourSO: {fileID: 11400000, guid: 356fb52b092eca04a8add602bdd9e6dd, type: 2}
+    droneBehaviourSO: {fileID: 11400000, guid: 4a7cf9de2e3b8234fb4b43e6f6354807, type: 2}
+    PowerUPs:
+    - {fileID: 11400000, guid: 18337279720c02445af2d51a0514721a, type: 2}
     levels:
     - energyCost: 10
       health: 100

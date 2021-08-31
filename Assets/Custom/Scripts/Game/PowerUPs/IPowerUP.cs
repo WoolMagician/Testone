@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface IPowerUP
 {
-    void ApplyPowerUP(IData data);
+    void ApplyPowerUP(IData data, IHasPowerUPs poweredUpObject);
 }
 
 // Forse è meglio tipizzare?

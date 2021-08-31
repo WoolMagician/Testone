@@ -15,7 +15,8 @@ MonoBehaviour:
   _data:
     droneName: XPL-1
     currentLevel: 0
-    droneBehaviourSO: {fileID: 11400000, guid: 30e4259bc9b7e7a439a22230a41507aa, type: 2}
+    droneBehaviourSO: {fileID: 11400000, guid: 0b7cc5385525c404d924bab54d894e14, type: 2}
+    PowerUPs: []
     levels:
     - energyCost: 10
       health: 0
